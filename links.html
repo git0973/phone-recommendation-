@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quick Links</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --accent: #00c6ff;
+  --bg-dark: #060606;
+  --card-bg: rgba(255,255,255,0.045);
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  background: radial-gradient(circle at top, #141414, var(--bg-dark));
+  color: #eaeaea;
+}
+
+header {
+  padding: 40px 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.2rem;
+}
+
+header p {
+  opacity: 0.7;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.tab {
+  padding: 12px 20px;
+  border-radius: 30px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #ddd;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.tab.active {
+  background: linear-gradient(135deg, var(--accent), #0072ff);
+  color: #000;
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.link-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.05);
+  animation: floatIn 0.4s ease;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.link-box {
+  background: rgba(0,0,0,0.4);
+  padding: 16px;
+  border-radius: 12px;
+  word-break: break-all;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+  color: #bcdcff;
+}
+
+.copy-btn {
+  padding: 12px 22px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), #0072ff);
+  color: #000;
+  transition: transform 0.25s ease;
+}
+
+.copy-btn:hover {
+  transform: translateY(-2px);
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  font-size: 0.8rem;
+  color: #888;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Quick Access Links</h1>
+  <p>Select a tab to reveal and copy the link</p>
+</header>
+
+<div class="container">
+
+  <div class="tabs" id="tabs"></div>
+
+  <div id="content"></div>
+
+</div>
+
+<footer>
+© <span id="year"></span> All rights reserved
+</footer>
+
+<script>
+const links = {
+  8: "https://example.com/link8",
+  7: "https://example.com/link7",
+  6: "https://example.com/link6",
+  5: "https://example.com/link5",
+  4: "https://example.com/link4",
+  3: "https://example.com/link3",
+  2: "https://example.com/link2",
+  1: "https://example.com/link1"
+};
+
+const tabsContainer = document.getElementById("tabs");
+const content = document.getElementById("content");
+
+Object.keys(links).sort((a,b)=>b-a).forEach(num => {
+  const tab = document.createElement("div");
+  tab.className = "tab";
+  tab.textContent = `Link #${num}`;
+  tab.onclick = () => showLink(num, tab);
+  tabsContainer.appendChild(tab);
+});
+
+function showLink(num, activeTab) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  activeTab.classList.add("active");
+
+  const link = links[num];
+
+  content.innerHTML = `
+    <div class="link-card">
+      <h2>Link #${num}</h2>
+      <div class="link-box" id="linkText">${link}</div>
+      <button class="copy-btn" onclick="copyLink('${link}')">Copy Link</button>
+    </div>
+  `;
+}
+
+function copyLink(text) {
+  navigator.clipboard.writeText(text);
+  alert("Link copied to clipboard");
+}
+
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
